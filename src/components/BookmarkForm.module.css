@@ -1,0 +1,92 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  color: #fff;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 20px;
+  position: relative;
+}
+
+label {
+  position: relative;
+}
+
+input,
+textarea {
+  width: 100%;
+  max-width: 350px;
+  padding: 20px 0 10px 10px;
+  color: #fff;
+  background-color: #333;
+  font-size: medium;
+  border: 1px solid rgba(105, 105, 105, 0.397);
+  border-radius: 10px;
+  outline: 0;
+}
+
+textarea {
+  resize: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  font-size: small;
+}
+
+input + span,
+textarea + span {
+  position: absolute;
+  left: 10px;
+  top: 15px;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: text;
+  transition: 0.4s ease-in-out;
+}
+
+textarea + span {
+  top: 30px;
+}
+
+input:placeholder-shown + span,
+textarea:placeholder-shown + span {
+  top: 4px;
+  font-size: 0.7em;
+}
+
+input:focus + span,
+textarea:focus + span,
+input:valid + span,
+textarea:valid + span {
+  top: 4px;
+  font-size: 0.7em;
+  font-weight: 600;
+  color: #00bfff;
+}
+
+small {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+button {
+  border: none;
+  outline: none;
+  padding: 10px 15px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 20px;
+  background-color: #00bfff;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  background-color: #00bfffba;
+}
+
+.btnContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
