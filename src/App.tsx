@@ -1,21 +1,39 @@
-import { Client } from "@notionhq/client";
 import { useEffect, useState } from "react";
+import { Client } from "@notionhq/client";
+import browser, { Tabs } from "webextension-polyfill";
 import "./App.css";
 
+type Tag = {
+  name: string;
+};
+
+type Bookmark = {
+  title: string;
+  url: string;
+  tags: Tag[];
+  notes: string;
+};
+
+type PageData = {
+  title: string;
+  url: string;
+};
+
+const notion = new Client({
+  auth: import.meta.env.VITE_NOTION_API_TOKEN,
+});
+
 function App() {
-  const [pageData, setPageData] = useState({});
+  const [pageData, setPageData] = useState<PageData>();
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
-  async function saveBookmarkToNotion(bookmark) {
-    const notion = new Client({
-      auth: process.env.NEXT_PUBLIC_NOTION_API_TOKEN,
-    });
-
+  async function saveBookmarkToNotion(bookmark: Bookmark) {
     try {
       await notion.pages.create({
         parent: {
-          database_id: process.env.NEXT_PUBLIC_NOTION_DATABASE_ID,
+          type: "database_id",
+          database_id: import.meta.env.VITE_NOTION_DATABASE_ID,
         },
         properties: {
           Title: {
@@ -50,19 +68,24 @@ function App() {
     }
   }
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsSaving(true);
+    console.log(e.target);
+    // const bookmark = Object.fromEntries(e.target.elements);
 
-    const data = new FormData(e.target);
-    const bookmark = Object.fromEntries(data.entries());
-
-    bookmark.tags = bookmark.tags
-      .split(",")
-      .filter((tag) => tag.trim().length !== 0)
-      .map((tag) => ({
-        name: tag.trim(),
-      }));
+    // bookmark.tags = bookmark.tags
+    //   .split(",")
+    //   .filter((tag: string) => tag.trim().length !== 0)
+    //   .map((tag: string) => ({
+    //     name: tag.trim(),
+    //   }));
+    const bookmark = {
+      title: "title",
+      url: "url",
+      tags: [{ name: "tag1" }, { name: "tag2" }],
+      notes: "notes",
+    };
 
     const result = await saveBookmarkToNotion(bookmark);
 
@@ -75,11 +98,13 @@ function App() {
 
   useEffect(() => {
     browser.tabs &&
-      browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        const url = tabs[0].url;
-        const title = tabs[0].title;
-        setPageData({ url, title });
-      });
+      browser.tabs
+        .query({ active: true, currentWindow: true })
+        .then((tabs: Tabs.Tab[]) => {
+          const url = tabs[0].url || "unknown";
+          const title = tabs[0].title || "unknown";
+          setPageData({ url, title });
+        });
   }, []);
 
   return (
@@ -97,8 +122,8 @@ function App() {
               <input
                 name="title"
                 type="text"
-                defaultValue={pageData.title}
-                title={pageData.title}
+                defaultValue={pageData?.title}
+                title={pageData?.title}
                 required
               />
             </div>
@@ -107,8 +132,8 @@ function App() {
               <input
                 name="url"
                 type="url"
-                defaultValue={pageData.url}
-                title={pageData.url}
+                defaultValue={pageData?.url}
+                title={pageData?.url}
                 required
               />
             </div>
@@ -124,7 +149,7 @@ function App() {
             </div>
             <div>
               <label>Notes</label>
-              <input name="notes" as="textarea" rows={3} />
+              <textarea name="notes" rows={3} />
             </div>
             <div>
               <button type="submit" disabled={isSaving}>
