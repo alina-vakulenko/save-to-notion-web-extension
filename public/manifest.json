@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Notion Bookmarks",
+  "short_name": "notion-bookmark",
+  "version": "1.0.0",
+  "description": "Store Links to Notion",
+  "permissions": ["activeTab"],
+  "content_scripts": [
+    { "matches": ["https://*/*", "http://*/*"], "js": ["inject.js"] }
+  ],
+  "host_permissions": ["<all_urls>"],
+  "action": { "default_popup": "index.html" }
+}
