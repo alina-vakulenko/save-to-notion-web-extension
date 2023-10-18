@@ -1,7 +1,7 @@
 import styles from "./BookmarkForm.module.css";
 
 type BookmarkFormProps = {
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   pageTitle?: string | null;
   pageUrl?: string | null;
   isSaving: boolean;
@@ -29,12 +29,17 @@ const BookmarkForm = ({
         <span>URL</span>
       </label>
       <label htmlFor="tags">
-        <input name="tags" type="text" />
+        <input name="tags" type="text" placeholder="e.g. CI/CD, deploy" />
         <span>Tags</span>
         <small>Separate Tags with Commas</small>
       </label>
       <label htmlFor="notes">
-        <textarea name="notes" rows={3} />
+        <textarea
+          name="notes"
+          rows={3}
+          minLength={1}
+          placeholder="Some usefull notes"
+        />
         <span>Notes</span>
       </label>
       <div className={styles.btnContainer}>

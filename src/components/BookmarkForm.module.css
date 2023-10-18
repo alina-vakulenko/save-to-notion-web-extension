@@ -1,12 +1,13 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 10px;
+  gap: 8px;
+  padding: 8px;
+  width: 330px;
   color: #fff;
   background-color: #1a1a1a;
   border: 1px solid #333;
-  border-radius: 20px;
+  border-radius: 16px;
   position: relative;
 }
 
@@ -16,12 +17,13 @@ label {
 
 input,
 textarea {
-  width: 100%;
-  max-width: 350px;
-  padding: 20px 0 10px 10px;
+  width: 316px;
+  height: 36px;
+  padding-left: 10px;
+  padding-top: 4px;
   color: #fff;
   background-color: #333;
-  font-size: medium;
+  font-size: 14px;
   border: 1px solid rgba(105, 105, 105, 0.397);
   border-radius: 10px;
   outline: 0;
@@ -29,6 +31,8 @@ textarea {
 
 textarea {
   resize: none;
+  height: auto;
+  padding-top: 16px;
 }
 
 input::placeholder,
@@ -40,34 +44,26 @@ input + span,
 textarea + span {
   position: absolute;
   left: 10px;
-  top: 15px;
+  top: 50%;
+  transform: translateY(-50%);
   color: rgba(255, 255, 255, 0.5);
   cursor: text;
   transition: 0.4s ease-in-out;
 }
 
-textarea + span {
-  top: 30px;
-}
-
-input:placeholder-shown + span,
-textarea:placeholder-shown + span {
-  top: 4px;
-  font-size: 0.7em;
-}
-
 input:focus + span,
 textarea:focus + span,
 input:valid + span,
-textarea:valid + span {
-  top: 4px;
-  font-size: 0.7em;
-  font-weight: 600;
+textarea:valid + span,
+input:placeholder-shown + span,
+textarea:placeholder-shown + span {
+  top: -2px;
+  transform: none;
   color: #00bfff;
 }
 
 small {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 button {

@@ -9,5 +9,11 @@
     { "matches": ["https://*/*", "http://*/*"], "js": ["inject.js"] }
   ],
   "host_permissions": ["<all_urls>"],
-  "action": { "default_popup": "index.html" }
+  "action": { "default_popup": "index.html" },
+  "icons": {
+    "16": "pin-icon.png",
+    "32": "pin-icon.png",
+    "48": "pin-icon.png",
+    "128": "pin-icon.png"
+  }
 }

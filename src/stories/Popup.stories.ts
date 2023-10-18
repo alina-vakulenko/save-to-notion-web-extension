@@ -9,7 +9,7 @@ const meta = {
   },
   tags: ["autodocs"],
   args: {
-    pageData: { title: "Page title", url: "example@gmail.com" },
+    pageData: { title: "", url: "" },
   },
 } satisfies Meta<typeof Popup>;
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import BookmarkForm from "./BookmarkForm";
 import {
-  type Bookmark,
+  Bookmark,
   saveBookmarkToNotion,
 } from "../helpers/saveBookmarkToNotion";
 import type { PageData } from "../App";
@@ -12,12 +12,13 @@ type PopupProps = {
 };
 
 const Popup = ({ pageData }: PopupProps) => {
-  const [isSaving, setIsSaving] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
+  const [status, setStatus] = useState<"error" | "saving" | "success" | "idle">(
+    "idle"
+  );
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsSaving(true);
+    setStatus("saving");
     const formData = new FormData(e.currentTarget);
     const bookmarkData = Object.fromEntries(formData.entries()) as Record<
       string,
@@ -32,28 +33,33 @@ const Popup = ({ pageData }: PopupProps) => {
       }));
 
     const bookmark = { ...bookmarkData, tags } as Bookmark;
-    const result = await saveBookmarkToNotion(bookmark);
 
+    const result = await saveBookmarkToNotion(bookmark);
     if (result) {
-      setIsSaved(true);
+      setStatus("success");
     } else {
-      setIsSaving(false);
+      setStatus("error");
     }
   }
+
+  const contentSaved = <span className={styles.message}>Done 👍</span>;
+  const contentError = (
+    <span className={styles.message}>Something went wrong</span>
+  );
 
   return (
     <div className={styles.popup}>
       <div>
         <h1 className={styles.heading}>Save to Notion</h1>
       </div>
-      {isSaved ? (
-        <span>Saved</span>
-      ) : (
+      {status === "success" && contentSaved}
+      {status === "error" && contentError}
+      {(status === "saving" || status === "idle") && (
         <BookmarkForm
           onSubmit={handleSubmit}
           pageTitle={pageData?.title}
           pageUrl={pageData?.url}
-          isSaving={isSaving}
+          isSaving={status === "saving"}
         />
       )}
     </div>
